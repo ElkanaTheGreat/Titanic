@@ -7,10 +7,10 @@ serializeResultAndModel <-
     result$Survived[result$Survived == "Died"] <- 0
     result$Survived[result$Survived == "Survived"] <- 1
     result$Survived <- as.integer(result$Survived)
-    write.csv(paste0(result_path, "result_rev", as.character(GetRevision()), ".csv"),
+    write.csv(paste0(result_path, "result_rev", as.character(GetRevision()),"_method_", model$modelInfo$label, ".csv"),
               x = result,
               row.names = FALSE)
-    saveRDS(model, paste0(model_path, "model_rev", as.character(GetRevision()), ".rdata"))
+    saveRDS(model, paste0(model_path, "model_rev", as.character(GetRevision()),"_method_", model$modelInfo$label,".rdata"))
   }
 
 serializeFactor <- function(factor_path, factor)

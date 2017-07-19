@@ -1,6 +1,6 @@
-library(caret)
-library(rpart)
-library(doParallel)
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(rpart))
+suppressPackageStartupMessages(library(doParallel))
 
 set.seed(11547)
 
@@ -38,6 +38,8 @@ validation_data <- prepareData(validation_data)
 test_data <- prepareData(test_data)
 
 # build model
+
+methods <- c("nnet", "snn", "rf")
 
 cluster <- makeCluster(detectCores() - 1) # convention to leave 1 core for OS
 registerDoParallel(cluster)
@@ -77,4 +79,4 @@ varImp(fit)
  result <- cbind(test_data[, c(1, 2)], pred)[, c(1, 3)]
  names(result) <- c("PassengerId", "Survived")
 
-serializeResultAndModel(model_path, fit, result_path, result)
+#serializeResultAndModel(model_path, fit, result_path, result)

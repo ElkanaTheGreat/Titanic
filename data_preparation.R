@@ -1,8 +1,8 @@
-library(stringr)
-library(VIM)
-library(dplyr)
-library(tidyr)
-library(mice)
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(VIM))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(mice))
 
 ## convert columns
 
@@ -19,6 +19,8 @@ ExtractFamilySize <- function(x, y) {return (x + y + 1)}
 ExtractHasCabin <- function(x) {return (ifelse(x != "", 1, 0))}
 ExtractIsChild <- function(x) {return (ifelse(x < 18, 1, 0))}
 ExtractIsMother <- function(s, p, a, t) {return (ifelse(s == 'female' & p > 0 & a > 18 & t != 'Miss', 1, 0))}
+ExtractFloor <- function(x) {return (str_match(x, "([a-zA-Z]{1}(?=[0-9]{1,3}))|^[a-zA-Z]{1}$")[,1])}
+ExtractMainCabin <- function(x) {return (str_match(x, "[0-9]+")[,1])}
 
 CondenseTitle <- function(x)
 {
@@ -51,7 +53,9 @@ ExtractFeatures <- function(data)
     mutate(DiscreteFamilySize = CondenseFamilySize(FamilySize),
            Fare = TransformFare(Fare),
            Embarked = ImputeEmbarked(Embarked),
-           HasCabin = ExtractHasCabin(Cabin))
+           HasCabin = ExtractHasCabin(Cabin),
+           Floor = ExtractFloor(Cabin),
+           MainCabin = ExtractMainCabin(Cabin))
            
   data$Sex <- as.factor(data$Sex)
   data$Embarked <- as.factor(data$Embarked)

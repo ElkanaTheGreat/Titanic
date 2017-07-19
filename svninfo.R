@@ -1,4 +1,4 @@
-library(XML)
+suppressPackageStartupMessages(library(XML))
 
 GetRevision <- function() {
   svninfo <- paste(system("svn info --xml", intern = T), collapse = "")
